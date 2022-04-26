@@ -1,7 +1,6 @@
 import Hero from "../Hero/Hero";
 import ProductList from "../ProductList/ProductList";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
-import "./App.css";
 import { inventory } from "../../utils";
 import { AppRoot } from "./App.styles";
 
