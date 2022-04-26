@@ -1,4 +1,3 @@
-import "./shoppingcart.css";
 import { CartItem, ShoppingCartRoot } from "./ShoppingCart.styles";
 
 const ShoppingCart = () => {

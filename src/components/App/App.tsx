@@ -3,16 +3,17 @@ import ProductList from "../ProductList/ProductList";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import "./App.css";
 import { inventory } from "../../utils";
+import { AppRoot } from "./App.styles";
 
 const App = () => {
   return (
-    <div className="App">
+    <AppRoot>
       <Hero />
       <ShoppingCart />
-      <div className="main">
+      <div>
         <ProductList inventory={inventory} />
       </div>
-    </div>
+    </AppRoot>
   );
 };
 
