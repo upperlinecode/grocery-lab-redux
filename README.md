@@ -1,8 +1,7 @@
 # Create A Grocery App
 
-![Foodster Demo](foodsterDemo.gif)
-
 ## The Goal
+
 In this lab, you're going to build the front-end for a digital grocery store! Users will be able to add and remove items to and from their cart and see a live total updated as they make changes.
 
 ## Getting Started
@@ -13,48 +12,69 @@ In this lab, you're going to build the front-end for a digital grocery store! Us
 4. `npm start`
 
 ## The Lab
+
 ### Part One: Display the Items
-Before starting, look at the `App.js` file, and pay special attention to the components used - looks like it only has three: `<Hero />`, `<ProductList />`, and `<ShoppingCart />`. However, you'll notice that there's also another component in the `components` folder called `product.js`. That component will be used not as a child component of the `App`, but as its grandchild component instead. So for this first bit we'll be developing mostly in the `productList.js` file, where we can insert some `<Product />` components, and in the `product.js` file, where we can make that product more responsive.
+
+Before starting, look at the `App.js` file, and pay special attention to the components used - looks like it only has three so far: `<Hero />`, `<ProductList />`, and `<ShoppingCart />`. However, you'll notice that there's also another component in the `components` folder called `Product.tsx`. That component will be used not as a child component of the `App`, but as its grandchild component instead. So for this first part of the lab we'll be developing mostly in the `ProductList.tsx` file, where we can insert some `<Product />` components, and in the `Product.tsx` file, where we can make that product more interactive and configurable.
 
 ###### Core features:
-1. In `productList.js`, Replace the placeholder text with at least one `<Product />` component.
-2. The `ProductList` component has a prop called `inventory`, which is an array of food objects. Pass the first string in that array down to the first `<Product />` component as a prop (called something like `name`), and then go display the product name as part of the `Product` component in the `product.js` file.
-3. Using a similar strategy as in step 2, try to display that price on the product.
-4. Complete this for all three of the products in our starting inventory.
 
-###### Stretch features:
-* Doing this manually is pretty tedious, and would be impossible if we had 100 or so items. Use a `.map()` method to display all the items instead.
+1. In `productList.tsx`, Replace the placeholder text with at least one `<Product />` component.
+2. The `ProductList` component has a prop called `inventory`, but right now it's typed with `any`, which is not ideal. Type it correctly.
+3. Pass the first string in that inventory array down to the first `<Product />` component as a prop (called something like `name`), and then go display the product name as part of the `Product` component in the `product.tsx` file.
+4. Using a similar strategy as in step 2, try to display that price on the product. You'll need to also figure out the best way to display the price formatted in human-readable currency, since the price itself is in cents.
+5. Add two more instances of the <Product/> component to complete this for all three of the products in our starting inventory.
+6. Doing this manually is pretty tedious, and would be impossible if we had 100 or so items. Use a `.map()` method to display all the items instead.
 
 ### Part Two: Create the add-remove functions
-Since the state is maintained in the `App` component, you'll need to create the state-modifying functions `addToShoppingCart` and `removeFromShoppingCart` at that level and pass them down to the child components. The `addToShoppingCart` function has already been created for you, but the remove function hasn't, and it's actually a little tougher - make sure to look up a refresher on how to remove items from a JavaScript array before implementing it.
+
+This app doesn't have redux added to it yet. You'll need to manage the state of the user's `cart` in a redux store.
 
 ###### Core features:
-1. Pass the `addToShoppingCart` function to the `ProductList` component, and then down again to each `Product` component. It's probably a good idea to use the React inspector to make sure the function is in each `Product` component's props before going much further.
-2. Modify the `onClick` of the "add" button in the `Product` component so that the onClick event calls the function you passed down as a prop in step 1 (instead of just console logging a string like it currently does). If it works, the "add" button will add that product to your shopping cart. Use the React inspector to see if the `App` component's state is updating as intended when you click an add button.
-3. Build out a `removeFromShoppingCart` function.
-4. Pass that function down as a prop to the `Product` component.
-5. Modify the `Product` component so that the remove button removes said item from the cart. Bear in mind that since the state isn't displayed anywhere, you'll want to use the React inspector to confirm that this is working.
+
+1. Add a provider to the application.
+2. Create a redux folder and create a store. Export it and add it to your provider as a prop.
+3. Create a reducer and include it in your `createStore`.
+4. Create an initial state and pass it as a default argument. You'll likely want your state to look something like this.
+
+```js
+const initialState = {
+  cart: {
+    a1582: {
+      product: { name: "Apple", priceInCents: 199, productID: "a1582" },
+      qty: 1,
+    },
+  },
+};
+```
+
+5. Configure the add button to dispatch actions that will add the designated item from your cart.
+6. Add a case to your reducer so that the add button works as intended.
+7. Repeat the above two steps to make the remove button work as well. Remember to include some logic to account for what happens if you try to remove an item that isn't there.
 
 ###### Stretch features:
-* The cart can get pretty disorganized as it stands now. Modify the add function to insert the items alphabetically instead of just appending to the end.
+
+- Write a selector that lets you know which items are currently in your cart, and make the "remove" button either hidden or unclickable when there are no items of that type in your cart.
 
 ### Part Three: Build the shopping cart display
-Now that state is updating, we need to get the contents on screen. Remember that if you try directly accessing items in the cart with numerical indexes (like `cart[0]`), you'll get errors if you try to access items that aren't there. So the first thing we'll do is build an if statement so that it only starts accessing the cart if there are items in the cart.
+
+Now that state is updating, we need to get the contents on screen.
 
 ###### Core features:
-1. Pass both parts of the `App` component's state (the `cart` and the `total`) to the `ShoppingCart` component.
-2. Now that the total is a prop of the `ShoppingCart` component, display that total where the hard-coded placeholder `120` is listed.
-3. Write an if statement that checks to see if your cart has at least one item in it. If not, display a message like `your cart is empty :(`.
-4. If `cart[0]` exists, display it.
-5. Add the `priceList` as a prop, and then display the price of the first item in your cart.
-6. Convert your hardcoded `cart[0]` into a more flexible `.map()` method to create each item.
+
+1. Create and use a selector to access the store's cart within your `ShoppingCart` component.
+2. Now that the data is in your `ShoppingCart` component, write some code to compute and display that total where the hard-coded placeholder `120` is currently listed.
+3. Create a check to see if your cart has at least one item in it. If not, display a message like `your cart is empty :(`.
+4. Map over the items to display everything in your cart. If you followed the model for state recommended above, you'll likely need `Object.keys()` to do this.
+5. Display the item name, quantity, and total price of each item in the Shopping Cart.
+6. Create a clickable "x" on each line that removes the item from your cart. This will need a dispatch.
 
 ###### Stretch features:
-* Right now, you are probably seeing unusual price formats like $3.5 instead of $3.50, and you may get some rounding errors in JavaScript that will lead to even wackier issues like $1.989999999999 (instead of $1.99). Consider creating a `PriceFormatter` function to convert a number into a string that always has exactly two digits after the decimal point.
+
+- Right now, you are probably seeing unusual price formats like $3.5 instead of $3.50, and you may get some rounding errors in JavaScript that will lead to even wackier issues like $1.989999999999 (instead of $1.99). Consider creating a `priceFormatter` function to convert a number into a string that always has exactly two digits after the decimal point.
 
 ## Extensions
-(These don't really have to be done in a certain order).
-* Most shopping carts have the option for you to click a little `x` next to the item to remove it from your cart. See if you can figure out how to do that.
-* Our shopping cart is really disorganized and really inefficient. Most users would expect something more like `Apples, 2 @ $1.99: $3.98` instead of listing each as a separate line item. This can be achieved by either creating a more dynamic cart structure behind the scenes (in state), or by writing some helper functions in the `ShoppingCart` component.
-* Since `ProductList` basically has only one job - to render out all the `Product` components, both are probably unnecessary. Abstract one away and use a `.map()` method to render all the products instead.
-* Right now our inventory says which items we have for sale, but doesn't keep track of quantities, so if a user ordered more apples than we have in stock, we'd be unable to fulfill the order. Figure out how we can handle that.
+
+- Most stores have a `+` and `-` button to change quantities directly in the shopping cart. Add those. Consider removing the "remove item" from the `Product` component, since that feels unusual.
+- Right now our inventory says which items we have for sale, but doesn't keep track of quantities, so if a user ordered more apples than we have in stock, we'd be unable to fulfill the order. Figure out how we can handle that.
+- Add in 3 more products and group them into shelves by category - dairy, produce, etc. Notice how little extra work this took when we're using Redux (compared to if we needed to prop drill further down).
