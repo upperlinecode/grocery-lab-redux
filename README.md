@@ -35,16 +35,36 @@ This app doesn't have redux added to it yet. You'll need to manage the state of 
 1. Add a provider to the application.
 2. Create a redux folder and create a store. Export it and add it to your provider as a prop.
 3. Create a reducer and include it in your `createStore`.
-4. Create an initial state and pass it as a default argument. You'll likely want your state to look something like this.
+4. Create an initial state and pass it as a default argument. How you structure your state is largely up to you, but if you'd like to match the solutions branch, you'll want to use this example:
 
 ```js
 const initialState = {
-  cart: {
-    a1582: {
-      product: { name: "Apple", priceInCents: 199, productID: "a1582" },
+  cart: [
+    {
+      product: {
+        name: "Apple",
+        priceInCents: 199,
+        productID: "a1582",
+      } as InventoryItem,
       qty: 1,
     },
-  },
+    {
+      product: {
+        name: "Loaf of Bread",
+        priceInCents: 150,
+        productID: "b2693",
+      } as InventoryItem,
+      qty: 1,
+    },
+    {
+      product: {
+        name: "Milk",
+        priceInCents: 250,
+        productID: "m3704",
+      } as InventoryItem,
+      qty: 1,
+    },
+  ],
 };
 ```
 
@@ -65,7 +85,7 @@ Now that state is updating, we need to get the contents on screen.
 1. Create and use a selector to access the store's cart within your `ShoppingCart` component.
 2. Now that the data is in your `ShoppingCart` component, write some code to compute and display that total where the hard-coded placeholder `120` is currently listed.
 3. Create a check to see if your cart has at least one item in it. If not, display a message like `your cart is empty :(`.
-4. Map over the items to display everything in your cart. If you followed the model for state recommended above, you'll likely need `Object.keys()` to do this.
+4. Map over the items to display everything in your cart. Ensure that items with a quantity of zero do not display.
 5. Display the item name, quantity, and total price of each item in the Shopping Cart.
 6. Create a clickable "x" on each line that removes the item from your cart. This will need a dispatch.
 

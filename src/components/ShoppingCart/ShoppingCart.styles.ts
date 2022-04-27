@@ -9,4 +9,12 @@ export const CartItem = styled.div`
   line-height: 6px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+`;
+
+export const ItemGroup = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
 `;

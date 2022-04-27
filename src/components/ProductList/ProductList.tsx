@@ -1,9 +1,13 @@
+import { inventory, InventoryItem } from "../../utils";
+import Product from "../Product/Product";
 import { ProductListRoot } from "./ProductList.styles";
 
-const ProductList = (props: { inventory: any }) => {
+const ProductList = (props: { inventory: InventoryItem[] }) => {
   return (
     <ProductListRoot>
-      Replace this placeholder text with some products
+      {inventory.map((item) => (
+        <Product key={item.productID} item={item} />
+      ))}
     </ProductListRoot>
   );
 };
