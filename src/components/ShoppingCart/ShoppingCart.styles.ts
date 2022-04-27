@@ -10,3 +10,10 @@ export const CartItem = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+export const ItemGroup = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+`;
