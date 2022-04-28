@@ -1,12 +1,13 @@
 import { useDispatch } from "react-redux";
-import { addItem, removeItem } from "../../redux/actions";
+import { addItem, removeItem } from '../../redux/cartSlice';
+import { AppDispatch } from '../../redux/configureStore';
 import { InventoryItem } from "../../utils";
 import { ButtonGroup, ProductRoot } from "./Product.styles";
 
 const Product = (props: { item: InventoryItem }) => {
   // destructure the props for easy access
   const { name, priceInCents, productID } = props.item;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAdd = () => {
     dispatch(addItem(productID));

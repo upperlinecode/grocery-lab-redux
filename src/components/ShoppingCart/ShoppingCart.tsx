@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
+import { clearItem } from '../../redux/cartSlice';
+import { AppDispatch } from '../../redux/configureStore';
 import { getCart } from "../../redux/selectors";
 import { CartItem, ItemGroup, ShoppingCartRoot } from "./ShoppingCart.styles";
 
 const ShoppingCart = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector(getCart);
 
   const total = cart.reduce(
@@ -13,10 +15,7 @@ const ShoppingCart = () => {
   );
 
   const remove = (id: string) => {
-    dispatch({
-      type: "CLEAR_ITEM",
-      payload: id,
-    });
+    dispatch(clearItem(id));
   };
 
   return (

@@ -1,3 +1,3 @@
-import { StateType } from "./configureStore";
+import { RootState } from "./configureStore";
 
-export const getCart = (state: StateType) => state.cart;
+export const getCart = (state: RootState) => state.cart;
