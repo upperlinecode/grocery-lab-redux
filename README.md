@@ -13,29 +13,16 @@ In this lab, you're going to build the front-end for a digital grocery store! Us
 
 ## The Lab
 
-### Part One: Display the Items
-
-Before starting, look at the `App.js` file, and pay special attention to the components used - looks like it only has three so far: `<Hero />`, `<ProductList />`, and `<ShoppingCart />`. However, you'll notice that there's also another component in the `components` folder called `Product.tsx`. That component will be used not as a child component of the `App`, but as its grandchild component instead. So for this first part of the lab we'll be developing mostly in the `ProductList.tsx` file, where we can insert some `<Product />` components, and in the `Product.tsx` file, where we can make that product more interactive and configurable.
-
-###### Core features:
-
-1. In `productList.tsx`, Replace the placeholder text with at least one `<Product />` component.
-2. The `ProductList` component has a prop called `inventory`, but right now it's typed with `any`, which is not ideal. Type it correctly.
-3. Pass the first string in that inventory array down to the first `<Product />` component as a prop (called something like `name`), and then go display the product name as part of the `Product` component in the `product.tsx` file.
-4. Using a similar strategy as in step 2, try to display that price on the product. You'll need to also figure out the best way to display the price formatted in human-readable currency, since the price itself is in cents.
-5. Add two more instances of the <Product/> component to complete this for all three of the products in our starting inventory.
-6. Doing this manually is pretty tedious, and would be impossible if we had 100 or so items. Use a `.map()` method to display all the items instead.
-
-### Part Two: Create the add-remove functions
+### Part One: Set Up Redux
 
 This app doesn't have redux added to it yet. You'll need to manage the state of the user's `cart` in a redux store.
 
-###### Core features:
-
-1. Add a provider to the application.
-2. Create a redux folder and create a store. Export it and add it to your provider as a prop.
-3. Create a reducer and include it in your `createStore`.
-4. Create an initial state and pass it as a default argument. How you structure your state is largely up to you, but if you'd like to match the solutions branch, you'll want to use this example:
+0. Install RTK in the terminal with `npm install @reduxjs/toolkit`.
+1. Add a directory called "redux" inside the `src` of your app.
+2. Add two files inside your "redux" directory called `store.ts` and `cartSlice.ts`
+3. Import `configureStore` into your `store.ts` file; use it to create and export a store - you can pass in an empty object for now.
+4. Import `createSlice` into your `cartSlice.ts` and use it to create a slice - remember that `createSlice` takes an object with three required properties: `name`, `initialState`, and `reducers`.
+   - For consistency, consider using the object below as your `initialState`:
 
 ```js
 const initialState = {
@@ -66,11 +53,25 @@ const initialState = {
     },
   ],
 };
+
+// optional export to make writing your selector much easier later on.
+export type cartState = typeof initialState;
 ```
 
-5. Configure the add button to dispatch actions that will add the designated item from your cart.
-6. Add a case to your reducer so that the add button works as intended.
-7. Repeat the above two steps to make the remove button work as well. Remember to include some logic to account for what happens if you try to remove an item that isn't there.
+5. Write out two reducers: one for `addItem` and one for `removeItem` - be as error-proof or as reckless as you care to be for now - we can refine these functions later. Remember that thanks to immer, you can now treat state as mutable.
+6. Export the reducer and both actions.
+7. Optional: Since actionCreator functions are created automatically, you may wish to confirm that the addItem function works as intended by running some test code like `console.log(addItem("a123"))`.
+
+### Part Two: Wire up the add-remove functions
+
+###### Core features:
+
+1. Add a `Provider` to the application.
+2. Import your store and add it to your provider as a prop.
+3. In your `Product` component, import `useDispatch` and call it to get a dispatch function.
+4. Configure the **add** button to dispatch actions that will add the designated item to your cart.
+5. Open redux devtools and confirm that the dispatched action is working as intended.
+6. Repeat the above two steps to make the **remove** button work as well. Remember to include some logic to account for what happens if you try to remove an item that isn't there.
 
 ###### Stretch features:
 
@@ -82,16 +83,17 @@ Now that state is updating, we need to get the contents on screen.
 
 ###### Core features:
 
-1. Create and use a selector to access the store's cart within your `ShoppingCart` component.
-2. Now that the data is in your `ShoppingCart` component, write some code to compute and display that total where the hard-coded placeholder `200` is currently listed.
-3. Create a check to see if your cart has at least one item in it. If not, display a message like `your cart is empty :(`.
-4. Map over the items to display everything in your cart. Ensure that items with a quantity of zero do not display.
-5. Display the item name, quantity, and total price of each item in the Shopping Cart.
-6. Create a clickable "x" on each line that removes the item from your cart. This will need a dispatch.
+1. Create and use a selector to access the store's cart. You can create the selector within your `ShoppingCart` component, or create it in a `selectors.ts` file in the `redux` folder and import it to the Shopping Cart.
+2. Use `useSelector` to access the cart in your `ShoppingCart` component. Now that the data is available, write some code to compute and display that total where the hard-coded placeholder `200` is currently listed.
+3. Find a way to avoid displaying items with a quantity of 0. This could mean reworking your reducers to make sure that state only includes items you have in the cart, or using a `.filter()` method to exclude some items from the list.
+4. Create a check to see if your cart has at least one item in it. If not, display a message like `your cart is empty :(`.
+5. Map over the items to display everything in your cart. Ensure that items with a quantity of zero do not display.
+6. Display the item name, quantity, and total price of each item in the Shopping Cart.
+7. Create a clickable "x" on each line that removes the item from your cart. This will need a dispatch.
 
 ###### Stretch features:
 
-- Right now, you are probably seeing unusual price formats like $3.5 instead of $3.50, and you may get some rounding errors in JavaScript that will lead to even wackier issues like $1.989999999999 (instead of $1.99). Consider creating a `priceFormatter` function to convert a number into a string that always has exactly two digits after the decimal point.
+- Right now, you may be seeing unusual price formats like $3.5 instead of $3.50, and you may get some rounding errors in JavaScript that will lead to even wackier issues like $1.989999999999 (instead of $1.99). Consider creating a `priceFormatter` function to convert a number into a string that always has exactly two digits after the decimal point.
 
 ## Extensions
 
