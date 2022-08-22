@@ -1,13 +1,10 @@
 import { CartItem, ItemGroup, ShoppingCartRoot } from "./ShoppingCart.styles";
 import { useSelector } from "react-redux";
-import { InventoryItem } from "../../utils";
+import { getCart } from "../../redux/selectors";
 
 const ShoppingCart = () => {
-  const cart = useSelector(
-    (state: {
-      cartReducer: { cart: { product: InventoryItem; qty: number }[] };
-    }) => state.cartReducer.cart
-  );
+  const cart = useSelector(getCart);
+  console.log(cart);
   const total = cart.reduce(
     (total, next) => (total += next.product.priceInCents * next.qty),
     0
