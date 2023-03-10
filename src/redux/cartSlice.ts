@@ -1,10 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { InventoryItem } from "../utils";
+
+interface HasQuantity {
+  qty: number;
+}
+
+type CartItem = InventoryItem & HasQuantity;
+
+const INITIAL_CART_STATE: CartItem[] = [];
 
 export const cartSlice = createSlice({
   name: "cart",
-  initialState: { cart: [] },
+  initialState: { cart: INITIAL_CART_STATE },
   reducers: {
-    addItem: (state, action) => {
+    addItem: (state, action: { type: string; payload: InventoryItem }) => {
       console.log(action);
       const itemDetails = action.payload;
       const i = state.cart.findIndex(
@@ -21,7 +30,7 @@ export const cartSlice = createSlice({
       }
       return state;
     },
-    removeItem: (state, action) => {
+    removeItem: (state, action: { type: string; payload: InventoryItem }) => {
       const itemDetails = action.payload;
       const i = state.cart.findIndex(
         (item) => item.productID === itemDetails.productID

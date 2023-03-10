@@ -6,3 +6,6 @@ export const store = configureStore({
     cartReducer: cartSlice.reducer,
   },
 });
+
+const stateSnapshot = store.getState();
+export type StoreStateShape = typeof stateSnapshot;

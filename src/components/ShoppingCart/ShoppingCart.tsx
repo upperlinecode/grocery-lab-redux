@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import { CartItem, ItemGroup, ShoppingCartRoot } from "./ShoppingCart.styles";
 import { createDollarString } from "../../utils";
+import { StoreStateShape } from "../../redux/configureStore";
 
 const ShoppingCart = () => {
-  const cart = useSelector((state) => state.cartReducer.cart) || [];
+  const cart =
+    useSelector((state: StoreStateShape) => state.cartReducer.cart) || [];
   const total = cart.reduce((acc, item) => {
     console.log(item, acc);
     const additionalAmount = item.qty * item.priceInCents;

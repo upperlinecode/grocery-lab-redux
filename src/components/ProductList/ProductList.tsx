@@ -1,7 +1,8 @@
 import { ProductListRoot } from "./ProductList.styles";
 import Product from "../Product/Product";
+import { InventoryItem } from "../../utils";
 
-const ProductList = (props) => {
+const ProductList = (props: { inventory: InventoryItem[] }) => {
   return (
     <ProductListRoot>
       {props.inventory.map((product) => {

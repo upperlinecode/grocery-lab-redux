@@ -2,8 +2,9 @@ import { useDispatch } from "react-redux";
 import { createDollarString } from "../../utils";
 import { ButtonGroup, ProductRoot } from "./Product.styles";
 import { addItem, removeItem } from "../../redux/cartSlice";
+import { InventoryItem } from "../../utils";
 
-const Product = (props) => {
+const Product = (props: { details: InventoryItem }) => {
   const { name, priceInCents } = props.details;
   const dollarString = createDollarString(priceInCents);
   const dispatch = useDispatch();
