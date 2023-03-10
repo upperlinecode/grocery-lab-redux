@@ -1,6 +1,6 @@
 import { ProductListRoot } from "./ProductList.styles";
 
-const ProductList = (props: { inventory: any }) => {
+const ProductList = (props) => {
   return (
     <ProductListRoot>
       Replace this placeholder text with some products
